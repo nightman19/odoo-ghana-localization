@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_ghana" model="ir.ui.view">
+        <field name="name">hr.employee.form.ghana</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Ghana Payroll" name="ghana_payroll">
+                    <group>
+                        <group string="Salary Components">
+                            <field name="basic_salary"/>
+                            <field name="transport_allowance"/>
+                            <field name="housing_allowance"/>
+                            <field name="gross_salary" readonly="1"/>
+                        </group>
+                        <group string="Deductions (Monthly)">
+                            <field name="paye_tax" readonly="1"/>
+                            <field name="ssnit_employee" readonly="1"/>
+                            <field name="ssnit_employer" readonly="1"/>
+                        </group>
+                        <group string="Net Pay">
+                            <field name="net_salary" readonly="1" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+                    <group string="2025 Tax Rates Reference">
+                        <p>PAYE: 0% (0-490), 5% (491-660), 10% (661-3750), 17.5% (3751-20000), 25% (20001-60000), 30% (60000+)</p>
+                        <p>SSNIT: 18.5% total (13% employer + 5.5% employee), Max: GHS 61,000/year</p>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
