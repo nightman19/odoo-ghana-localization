@@ -23,6 +23,10 @@
                             <field name="net_salary" readonly="1" class="oe_subtotal_footer_separator"/>
                         </group>
                     </group>
+                    <group>
+                        <field name="company_total_cost" readonly="1" class="oe_subtotal_footer_separator" />
+                        <p>Monthly cost to company (includes employer SSNIT)</p>
+                    </group>
                     <group string="2025 Tax Rates Reference">
                         <p>PAYE: 0% (0-490), 5% (491-660), 10% (661-3750), 17.5% (3751-20000), 25% (20001-60000), 30% (60000+)</p>
                         <p>SSNIT: 18.5% total (13% employer + 5.5% employee), Max: GHS 61,000/year</p>

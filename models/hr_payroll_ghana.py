@@ -16,6 +16,17 @@ class HrEmployeeGhana(models.Model):
     ssnit_employer = fields.Monetary('SSNIT (Employer)', compute='_compute_ssnit', store=True)
     net_salary = fields.Monetary('Net Salary', compute='_compute_net_salary', store=True)
     
+    company_total_cost = fields.Monetary(
+        'Total Company Cost',
+        compute='_compute_company_cost',
+        help='Gross salary + employer SSNIT contribution'
+    )
+
+    @api.depends('gross_salary', 'ssnit_employer')
+    def _compute_company_cost(self):
+        for employee in self:
+            employee.company_total_cost = employee.gross_salary + employee.ssnit_employer
+
     @api.depends('basic_salary', 'transport_allowance', 'housing_allowance')
     def _compute_gross_salary(self):
         for employee in self:

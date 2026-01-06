@@ -17,6 +17,8 @@
     'depends': ['hr'],
     'data': [
         'views/employee_views.xml',
+        'views/payslip_report.xml',
+        'views/payroll_summary.xml',
     ],
     'installable': True,
     'application': False,
