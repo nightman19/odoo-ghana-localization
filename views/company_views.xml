@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add SSNIT field to Company form -->
+    <record id="view_company_form_ghana" model="ir.ui.view">
+        <field name="name">res.company.form.ghana</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_registry']" position="after">
+                <field name="ssnit_employer_number" placeholder="e.g., 200502844"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

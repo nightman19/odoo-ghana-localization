@@ -5,6 +5,9 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='ssnid']" position="attributes">
+                <attribute name="string">SSNIT Number</attribute>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Ghana Payroll" name="ghana_payroll">
                     <group>

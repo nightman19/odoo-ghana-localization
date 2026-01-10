@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- TIER 1 REPORT (13.5%) -->
+    <template id="report_ssnit_tier1">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <!-- Header -->
+                    <div class="text-center" style="margin-bottom: 20px;">
+                        <h3 style="margin: 5px 0;">
+                            <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y').upper()"/>
+                        </h3>
+                    </div>
+
+                    <!-- Employer Info -->
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 5px 0; font-size: 1.1em;">
+                            <strong>EMPLOYER: </strong>
+                            <t t-if="docs and docs[0].company_id">
+                                <t t-if="docs[0].company_id.ssnit_employer_number">
+                                    <span t-field="docs[0].company_id.ssnit_employer_number"/> – 
+                                </t>
+                                <span t-field="docs[0].company_id.name" style="text-transform: uppercase;"/>
+                            </t>
+                            <t t-else="">
+                                [EMPLOYER SSNIT NUMBER] – [EMPLOYER NAME]
+                            </t>
+                        </p>
+                        <p style="margin: 5px 0; font-size: 0.95em; color: #666;">
+                            <strong>TIER 1 - SOCIAL SECURITY (13.5%)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Employee Table -->
+                    <table class="table table-bordered" style="font-size: 0.9em; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="width: 18%;" >SSNIT NUMBER</th>
+                                <th style="width: 20%;">GHANA CARD NUMBER</th>
+                                <th style="width: 30%;">EMPLOYEE NAME</th>
+                                <th style="width: 16%;" class="text-right">GROSS SALARY(GHS)</th>
+                                <th style="width: 16%;" class="text-right">CONTRIBUTION(GHS)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_gross" t-value="0"/>
+                            <t t-set="total_contribution" t-value="0"/>
+                            
+                            <t t-foreach="docs" t-as="employee">
+                                <t t-set="insurable" t-value="min(employee.basic_salary or 0, 61000/12)"/>
+                                <t t-set="tier1_contrib" t-value="insurable * 0.135"/>
+                                <t t-set="total_gross" t-value="total_gross + (employee.basic_salary or 0)"/>
+                                <t t-set="total_contribution" t-value="total_contribution + tier1_contrib"/>
+                                
+                                <tr>
+                                    <td>
+                                        <t t-if="employee.ssnid">
+                                            <span t-field="employee.ssnid"/>
+                                        </t>
+                                        <t t-else="">
+                                            
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="employee.identification_id">
+                                            <span t-field="employee.identification_id"/>
+                                        </t>
+                                        <t t-else="">
+                                            
+                                        </t>
+                                    </td>
+                                    <td><span t-field="employee.name" style="text-transform: uppercase;"/></td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.2f}'.format(employee.basic_salary or 0)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.2f}'.format(tier1_contrib)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            
+                            <!-- Total Row -->
+                            <tr class="text-end" style="font-weight: bold; background-color: #f9f9f9;">
+                                <td colspan="3" class="text-right"><strong>TOTAL</strong></td>
+                                <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_gross)"/></strong></td>
+                                <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_contribution)"/></strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                     <!-- Certification Section -->
+                    <div class="row" style="margin-top: 160px; page-break-inside: avoid;">
+                        <div class="col-6">
+                            <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                <p style="margin: 5px 0; font-weight: bold;">Prepared By</p>
+                                <p style="margin: 5px 0;">Name: _______________________</p>
+                                <p style="margin: 5px 0;">Position: ____________________</p>
+                                <p style="margin: 5px 0;">Date: _______________________</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                <p style="margin: 5px 0; font-weight: bold;">Approved By (Manager/Director)</p>
+                                <p style="margin: 5px 0;">Name: _______________________</p>
+                                <p style="margin: 5px 0;">Signature: ___________________</p>
+                                <p style="margin: 5px 0;">Date: _______________________</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer" style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center; font-size: 0.85em; color: #666;">
+                        <p style="margin: 5px 0;">
+                            <strong>This is a computer-generated document.</strong>
+                        </p>
+                        <p style="margin: 5px 0;">
+                            Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>
+                        </p>
+                        <p style="margin: 5px 0; font-size: 0.9em;">
+                            For official submission to SSNIT offices
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- TIER 2 REPORT (5%) -->
+    <template id="report_ssnit_tier2">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <!-- Header -->
+                    <div class="text-center" style="margin-bottom: 20px;">
+                        <h3 style="margin: 5px 0;">
+                            <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y').upper()"/>
+                        </h3>
+                    </div>
+
+                    <!-- Employer Info -->
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 5px 0; font-size: 1.1em;">
+                            <strong>EMPLOYER: </strong>
+                            <t t-if="docs and docs[0].company_id">
+                                <!-- <span t-field="o.company_id.ssnit_number"/> -->
+                                <span t-field="docs[0].company_id.name"/>
+                            </t>
+                            <t t-else="">
+                                [EMPLOYER NAME]
+                            </t>
+                        </p>
+                        <p style="margin: 5px 0; font-size: 0.95em; color: #666;">
+                            <strong>TIER 2 - OCCUPATIONAL PENSION (5%)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Employee Table -->
+                    <table class="table table-bordered" style="font-size: 0.9em;">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="width: 18%;">SSNIT NUMBER</th>
+                                <th style="width: 20%;">GHANA CARD NUMBER</th>
+                                <th style="width: 30%;">EMPLOYEE NAME</th>
+                                <th style="width: 16%;" class="text-right">GROSS SALARY (GHS)</th>
+                                <th style="width: 16%;" class="text-right">CONTRIBUTION (GHS)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_gross" t-value="0"/>
+                            <t t-set="total_contribution" t-value="0"/>
+                            
+                            <t t-foreach="docs" t-as="employee">
+                                <t t-set="insurable" t-value="min(employee.basic_salary or 0, 61000/12)"/>
+                                <t t-set="tier2_contrib" t-value="insurable * 0.05"/>
+                                <t t-set="total_gross" t-value="total_gross + (employee.basic_salary or 0)"/>
+                                <t t-set="total_contribution" t-value="total_contribution + tier2_contrib"/>
+                                
+                                <tr>
+                                    <td>
+                                        <t t-if="employee.ssnid">
+                                            <span t-field="employee.ssnid"/>
+                                        </t>
+                                        <t t-else="">
+                                            
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="employee.identification_id">
+                                            <span t-field="employee.identification_id"/>
+                                        </t>
+                                        <t t-else="">
+                                            
+                                        </t>
+                                    </td>
+                                    <td><span t-field="employee.name" style="text-transform: uppercase;"/></td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.2f}'.format(employee.basic_salary or 0)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.2f}'.format(tier2_contrib)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            
+                            <!-- Total Row -->
+                            <tr class="text-end" style="font-weight: bold; background-color: #f9f9f9;">
+                                <td colspan="3" class="text-right"><strong>TOTAL</strong></td>
+                                <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_gross)"/></strong></td>
+                                <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_contribution)"/></strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                     <!-- Certification Section -->
+                    <div class="row" style="margin-top: 160px; page-break-inside: avoid;">
+                        <div class="col-6">
+                            <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                <p style="margin: 5px 0; font-weight: bold;">Prepared By</p>
+                                <p style="margin: 5px 0;">Name: _______________________</p>
+                                <p style="margin: 5px 0;">Position: ____________________</p>
+                                <p style="margin: 5px 0;">Date: _______________________</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                <p style="margin: 5px 0; font-weight: bold;">Approved By (Manager/Director)</p>
+                                <p style="margin: 5px 0;">Name: _______________________</p>
+                                <p style="margin: 5px 0;">Signature: ___________________</p>
+                                <p style="margin: 5px 0;">Date: _______________________</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer" style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center; font-size: 0.85em; color: #666;">
+                        <p style="margin: 5px 0;">
+                            <strong>This is a computer-generated document.</strong>
+                        </p>
+                        <p style="margin: 5px 0;">
+                            Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>
+                        </p>
+                        <p style="margin: 5px 0; font-size: 0.9em;">
+                            For official submission to SSNIT offices
+                        </p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Actions -->
+    <record id="action_report_ssnit_tier1" model="ir.actions.report">
+        <field name="name">SSNIT Tier 1 (13.5%)</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gh_localization.report_ssnit_tier1</field>
+        <field name="report_file">gh_localization.report_ssnit_tier1</field>
+        <field name="print_report_name">'SSNIT Tier 1 - %s - %s' % (object.company_id.name if object.company_id else 'Company', time.strftime('%B %Y'))</field>
+    </record>
+
+    <record id="action_report_ssnit_tier2" model="ir.actions.report">
+        <field name="name">SSNIT Tier 2 (5%)</field>
+        <field name="model">hr.employee</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gh_localization.report_ssnit_tier2</field>
+        <field name="report_file">gh_localization.report_ssnit_tier2</field>
+        <field name="print_report_name">'SSNIT Tier 2 - %s - %s' % (object.company_id.name if object.company_id else 'Company', time.strftime('%B %Y'))</field>
+    </record>
+
+    <!-- Server Actions for Batch Reports -->
+    <record id="action_print_ssnit_tier1" model="ir.actions.server">
+        <field name="name">SSNIT Tier 1 Report</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = env.ref('gh_localization.action_report_ssnit_tier1').report_action(records)
+        </field>
+    </record>
+
+    <record id="action_print_ssnit_tier2" model="ir.actions.server">
+        <field name="name">SSNIT Tier 2 Report</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = env.ref('gh_localization.action_report_ssnit_tier2').report_action(records)
+        </field>
+    </record>
+</odoo>

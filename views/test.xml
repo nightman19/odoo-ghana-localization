@@ -1,0 +1,379 @@
+<template id="report_employee_payslip_ghana">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size: 13px;"> <div class="text-center" style="border-bottom: 2px solid #875A7B; padding-bottom: 10px; margin-bottom: 15px;">
+                            <!-- <h2 style="color: #875A7B; margin: 0; font-weight: bold;">
+                                <t t-if="o.company_id"><span t-field="o.company_id.name"/></t>
+                                <t t-else="">YOUR COMPANY NAME</t>
+                            </h2> -->
+                            <h5 style="margin: 5px 0;">EMPLOYEE PAYSLIP - <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/></h5>
+                        </div>
+
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #dee2e6;">
+                            <table class="table table-sm table-borderless" style="margin-bottom: 0;">
+                                <tr>
+                                    <td style="width: 20%;"><strong>Employee:</strong></td>
+                                    <td style="width: 30%;"><span t-field="o.name"/></td>
+                                    <td style="width: 20%;"><strong>ID:</strong></td>
+                                    <td style="width: 30%;">
+                                        <t t-if="o.barcode"><span t-field="o.barcode"/></t>
+                                        <t t-elif="o.identification_id"><span t-field="o.identification_id"/></t>
+                                        <t t-else="">EMP-<span t-esc="str(o.id).zfill(4)"/></t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Position:</strong></td>
+                                    <td><span t-field="o.job_id.name" t-if="o.job_id"/><span t-else="">N/A</span></td>
+                                    <td><strong>Date:</strong></td>
+                                    <td><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %b %Y')"/></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 style="color: #28a745; border-bottom: 1px solid #28a745; padding-bottom: 3px;">EARNINGS</h5>
+                                <table class="table table-sm" style="margin-bottom: 10px;">
+                                    <tbody>
+                                        <tr><td>Basic Salary</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.basic_salary or 0)"/></td></tr>
+                                        <tr t-if="o.transport_allowance"><td>Transport</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.transport_allowance)"/></td></tr>
+                                        <tr t-if="o.housing_allowance"><td>Housing</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.housing_allowance)"/></td></tr>
+                                        <tr style="font-weight: bold; background-color: #e8f5e9;">
+                                            <td>GROSS SALARY</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.gross_salary or 0)"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h5 style="color: #dc3545; border-bottom: 1px solid #dc3545; padding-bottom: 3px;">DEDUCTIONS</h5>
+                                <table class="table table-sm" style="margin-bottom: 10px;">
+                                    <tbody>
+                                        <tr><td>PAYE Tax</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.paye_tax or 0)"/></td></tr>
+                                        <tr><td>SSNIT (5.5%)</td><td class="text-right"><span t-esc="'{:,.2f}'.format(o.ssnit_employee or 0)"/></td></tr>
+                                        <tr style="font-weight: bold; background-color: #ffebee;">
+                                            <td>TOTAL DEDUCTIONS</td><td class="text-right"><span t-esc="'{:,.2f}'.format((o.paye_tax or 0) + (o.ssnit_employee or 0))"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                            <p style="margin: 0; font-size: 0.9em; opacity: 0.9;">NET PAYABLE AMOUNT</p>
+                            <h2 style="margin: 5px 0; font-weight: bold;">GHS <span t-esc="'{:,.2f}'.format(o.net_salary or 0)"/></h2>
+                        </div>
+
+                        <div class="row" style="font-size: 0.85em;">
+                            <div class="col-6">
+                                <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 8px; border-radius: 5px; height: 100%;">
+                                    <h6 style="color: #856404; margin-bottom: 5px; font-size: 1em;">SSNIT BREAKDOWN</h6>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Employer (13%):</span>
+                                        <strong>GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employer or 0)"/></strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="border-top: 1px solid #ffc107; margin-top: 3px;">
+                                        <span>Total Contribution:</span>
+                                        <strong>GHS <span t-esc="'{:,.2f}'.format((o.ssnit_employee or 0) + (o.ssnit_employer or 0))"/></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div style="background-color: #e7f3ff; border-left: 3px solid #2196F3; padding: 8px; border-radius: 5px; height: 100%;">
+                                    <h6 style="color: #1976D2; margin-bottom: 5px; font-size: 1em;">2025 TAX RATES</h6>
+                                    <p style="margin: 0; line-height: 1.2;">
+                                        PAYE: 0-490 (0%) | 491-660 (5%) | 661-3750 (10%)<br/>
+                                        SSNIT: Total 18.5% (Employer: 13% | Employee: 5.5%)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tax Rates Reference -->
+                        <div style="background-color: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 30px;">
+                            <h6 style="color: #1976D2; margin-top: 0;">2025 Ghana Tax Rates</h6>
+                            <table style="width: 100%; font-size: 0.85em;">
+                                <tr>
+                                    <td style="width: 50%; padding-right: 10px;">
+                                        <strong>PAYE (Progressive):</strong><br/>
+                                        0-490: 0% | 491-660: 5% | 661-3,750: 10%<br/>
+                                        3,751-20,000: 17.5% | 20,001-60,000: 25% | 60,000+: 30%
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <strong>SSNIT (Social Security):</strong><br/>
+                                        Total: 18.5% (Employer: 13% + Employee: 5.5%)<br/>
+                                        Tier 1: 13.5% | Tier 2: 5%
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Signatures -->
+                        <div class="row" style="margin-top: 60px; page-break-inside: avoid;">
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                    <p style="margin: 5px 0; font-weight: bold;">Employee Signature</p>
+                                    <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+                                        Date: ___________________
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                    <p style="margin: 5px 0; font-weight: bold;">Employer Signature</p>
+                                    <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+                                        Date: ___________________
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; padding-top: 10px; border-top: 1px solid #eee; text-align: center; font-size: 0.75em; color: #999;">
+                            <p style="margin: 0;">Computer-generated. Compliant with GRA 2025 regulations.</p>
+                            <p style="margin: 0;">Generated on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %b %Y %H:%M')"/></p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="footer" style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; font-size: 0.85em; color: #666;">
+                            <p style="margin: 5px 0;">
+                                <strong>This is a computer-generated payslip.</strong> Please keep for your records.
+                            </p>
+                            <p style="margin: 5px 0;">
+                                Calculations compliant with Ghana Revenue Authority 2025 regulations.
+                            </p>
+                            <p style="margin: 5px 0; font-size: 0.9em;">
+                                Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_employee_payslip_ghana">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="text-center" style="border-bottom: 3px solid #875A7B; padding-bottom: 20px; margin-bottom: 30px;">
+                            <h2 style="color: #875A7B; margin: 0;">EMPLOYEE PAYSLIP</h2>
+                            <h3 style="margin: 10px 0 5px 0;">Republic of Ghana</h3>
+                            <p style="margin: 0; color: #666;">
+                                <strong>Payment Period:</strong> 
+                                <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/>
+                            </p>
+                        </div>
+
+                        <!-- Employee Details Card -->
+                        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
+                            <table class="table table-sm table-borderless" style="margin-bottom: 0;">
+                                <tr>
+                                    <td style="width: 25%;"><strong>Employee Name:</strong></td>
+                                    <td style="width: 25%;"><span t-field="o.name"/></td>
+                                    <td style="width: 25%;"><strong>Employee ID:</strong></td>
+                                    <td style="width: 25%;">
+                                        <t t-if="o.barcode">
+                                            <span t-field="o.barcode"/>
+                                        </t>
+                                        <t t-elif="o.identification_id">
+                                            <span t-field="o.identification_id"/>
+                                        </t>
+                                        <t t-else="">
+                                            EMP-<span t-esc="str(o.id).zfill(4)"/>
+                                        </t>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td><strong>Position:</strong></td>
+                                    <td><span t-field="o.job_id.name" t-if="o.job_id"/><span t-else="">N/A</span></td>
+                                    <td><strong>Department:</strong></td>
+                                    <td><span t-field="o.department_id.name" t-if="o.department_id"/><span t-else="">N/A</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Date:</strong></td>
+                                    <td><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y')"/></td>
+                                    <td><strong>Currency:</strong></td>
+                                    <td>Ghana Cedis (GHS)</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Salary Breakdown -->
+                        <div class="row">
+                            <!-- Earnings Column -->
+                            <div class="col-6">
+                                <h4 style="color: #28a745; border-bottom: 2px solid #28a745; padding-bottom: 5px;">
+                                    <i class="fa fa-plus-circle"/> EARNINGS
+                                </h4>
+                                <table class="table table-sm">
+                                    <thead style="background-color: #e8f5e9;">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th class="text-right">Amount (GHS)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Basic Salary</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.basic_salary or 0)"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.transport_allowance and o.transport_allowance > 0">
+                                            <td>Transport Allowance</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.transport_allowance)"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.housing_allowance and o.housing_allowance > 0">
+                                            <td>Housing Allowance</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.housing_allowance)"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-top: 2px solid #28a745; font-weight: bold; background-color: #e8f5e9;">
+                                            <td>GROSS SALARY</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.gross_salary or 0)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Deductions Column -->
+                            <div class="col-6">
+                                <h4 style="color: #dc3545; border-bottom: 2px solid #dc3545; padding-bottom: 5px;">
+                                    <i class="fa fa-minus-circle"/> DEDUCTIONS
+                                </h4>
+                                <table class="table table-sm">
+                                    <thead style="background-color: #ffebee;">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th class="text-right">Amount (GHS)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>PAYE Tax</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.paye_tax or 0)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>SSNIT (Employee 5.5%)</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.ssnit_employee or 0)"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-top: 2px solid #dc3545; font-weight: bold; background-color: #ffebee;">
+                                            <td>TOTAL DEDUCTIONS</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format((o.paye_tax or 0) + (o.ssnit_employee or 0))"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Net Pay Box (Prominent) -->
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 10px; margin: 30px 0; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <h5 style="margin: 0 0 10px 0; font-weight: 300; opacity: 0.9;">NET PAY</h5>
+                            <h2 style="margin: 0; font-size: 2.5em; font-weight: bold;">
+                                GHS <span t-esc="'{:,.2f}'.format(o.net_salary or 0)"/>
+                            </h2>
+                            <p style="margin: 10px 0 0 0; font-size: 0.9em; opacity: 0.8;">
+                                Amount payable to employee
+                            </p>
+                        </div>
+
+                        <!-- SSNIT Breakdown -->
+                        <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 5px; margin-bottom: 30px;">
+                            <h5 style="color: #856404; margin-top: 0;">
+                                <i class="fa fa-info-circle"/> SSNIT CONTRIBUTIONS BREAKDOWN
+                            </h5>
+                            <table class="table table-sm table-borderless" style="margin-bottom: 0;">
+                                <tr>
+                                    <td style="width: 60%;">Employee Contribution (5.5%):</td>
+                                    <td class="text-right" style="font-weight: bold;">
+                                        GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employee or 0)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Employer Contribution (13%):</td>
+                                    <td class="text-right" style="font-weight: bold;">
+                                        GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employer or 0)"/>
+                                    </td>
+                                </tr>
+                                <tr style="border-top: 2px solid #ffc107;">
+                                    <td><strong>Total SSNIT Contribution:</strong></td>
+                                    <td class="text-right" style="font-weight: bold; color: #856404;">
+                                        GHS <span t-esc="'{:,.2f}'.format((o.ssnit_employee or 0) + (o.ssnit_employer or 0))"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="margin: 10px 0 0 0; font-size: 0.85em; color: #856404;">
+                                <em>* Maximum insurable income: GHS 5,083.33 per month (GHS 61,000 annually)</em>
+                            </p>
+                        </div>
+
+                        <!-- Tax Rates Reference -->
+                        <div style="background-color: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 30px;">
+                            <h6 style="color: #1976D2; margin-top: 0;">2025 Ghana Tax Rates</h6>
+                            <table style="width: 100%; font-size: 0.85em;">
+                                <tr>
+                                    <td style="width: 50%; padding-right: 10px;">
+                                        <strong>PAYE (Progressive):</strong><br/>
+                                        0-490: 0% | 491-660: 5% | 661-3,750: 10%<br/>
+                                        3,751-20,000: 17.5% | 20,001-60,000: 25% | 60,000+: 30%
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <strong>SSNIT (Social Security):</strong><br/>
+                                        Total: 18.5% (Employer: 13% + Employee: 5.5%)<br/>
+                                        Tier 1: 13.5% | Tier 2: 5%
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Signatures -->
+                        <div class="row" style="margin-top: 60px; page-break-inside: avoid;">
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                    <p style="margin: 5px 0; font-weight: bold;">Employee Signature</p>
+                                    <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+                                        Date: ___________________
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
+                                    <p style="margin: 5px 0; font-weight: bold;">Employer Signature</p>
+                                    <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+                                        Date: ___________________
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; font-size: 0.85em; color: #666;">
+                            <p style="margin: 5px 0;">
+                                <strong>This is a computer-generated payslip.</strong> Please keep for your records.
+                            </p>
+                            <p style="margin: 5px 0;">
+                                Calculations compliant with Ghana Revenue Authority 2025 regulations.
+                            </p>
+                            <p style="margin: 5px 0; font-size: 0.9em;">
+                                Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>

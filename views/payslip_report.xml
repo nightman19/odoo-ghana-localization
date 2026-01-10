@@ -4,18 +4,10 @@
     <template id="report_employee_payslip_ghana">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.basic_layout">
-                    <div class="page">
-                        <!-- Header -->
-                        <div class="text-center" style="border-bottom: 3px solid #875A7B; padding-bottom: 20px; margin-bottom: 30px;">
-                            <h2 style="color: #875A7B; margin: 0;">EMPLOYEE PAYSLIP</h2>
-                            <h3 style="margin: 10px 0 5px 0;">Republic of Ghana</h3>
-                            <p style="margin: 0; color: #666;">
-                                <strong>Payment Period:</strong> 
-                                <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/>
-                            </p>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size: 13px; page-break-after: always;"> <div class="text-center" style="border-bottom: 2px solid #875A7B; padding-bottom: 10px; margin-bottom: 15px;">
+                            <h5 style="margin: 5px 0;">EMPLOYEE PAYSLIP - <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/></h5>
                         </div>
-
                         <!-- Employee Details Card -->
                         <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
                             <table class="table table-sm table-borderless" style="margin-bottom: 0;">
@@ -130,46 +122,27 @@
                         </div>
 
                         <!-- Net Pay Box (Prominent) -->
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 10px; margin: 30px 0; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                            <h5 style="margin: 0 0 10px 0; font-weight: 300; opacity: 0.9;">NET PAY</h5>
-                            <h2 style="margin: 0; font-size: 2.5em; font-weight: bold;">
-                                GHS <span t-esc="'{:,.2f}'.format(o.net_salary or 0)"/>
-                            </h2>
-                            <p style="margin: 10px 0 0 0; font-size: 0.9em; opacity: 0.8;">
-                                Amount payable to employee
-                            </p>
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                            <p style="margin: 0; font-size: 0.9em; opacity: 0.9;">NET PAYABLE AMOUNT</p>
+                            <h2 style="margin: 5px 0; font-weight: bold;">GHS <span t-esc="'{:,.2f}'.format(o.net_salary or 0)"/></h2>
                         </div>
 
+
+                        
                         <!-- SSNIT Breakdown -->
-                        <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 5px; margin-bottom: 30px;">
-                            <h5 style="color: #856404; margin-top: 0;">
-                                <i class="fa fa-info-circle"/> SSNIT CONTRIBUTIONS BREAKDOWN
-                            </h5>
-                            <table class="table table-sm table-borderless" style="margin-bottom: 0;">
-                                <tr>
-                                    <td style="width: 60%;">Employee Contribution (5.5%):</td>
-                                    <td class="text-right" style="font-weight: bold;">
-                                        GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employee or 0)"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Employer Contribution (13%):</td>
-                                    <td class="text-right" style="font-weight: bold;">
-                                        GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employer or 0)"/>
-                                    </td>
-                                </tr>
-                                <tr style="border-top: 2px solid #ffc107;">
-                                    <td><strong>Total SSNIT Contribution:</strong></td>
-                                    <td class="text-right" style="font-weight: bold; color: #856404;">
-                                        GHS <span t-esc="'{:,.2f}'.format((o.ssnit_employee or 0) + (o.ssnit_employer or 0))"/>
-                                    </td>
-                                </tr>
-                            </table>
-                            <p style="margin: 10px 0 0 0; font-size: 0.85em; color: #856404;">
-                                <em>* Maximum insurable income: GHS 5,083.33 per month (GHS 61,000 annually)</em>
-                            </p>
+                        <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 8px; border-radius: 5px; height: 100%; font-size: 0.85em;">
+                            <h6 style="color: #856404; margin-bottom: 5px; font-size: 1em;">SSNIT BREAKDOWN</h6>
+                            <div class="d-flex justify-content-between">
+                                <span>Employer (13%):</span>
+                                <strong>GHS <span t-esc="'{:,.2f}'.format(o.ssnit_employer or 0)"/></strong>
+                            </div>
+                            <div class="d-flex justify-content-between" style="border-top: 1px solid #ffc107; margin-top: 3px;">
+                                <span>Total Contribution:</span>
+                                <strong>GHS <span t-esc="'{:,.2f}'.format((o.ssnit_employee or 0) + (o.ssnit_employer or 0))"/></strong>
+                            </div>
                         </div>
-
+                            
+                      
                         <!-- Tax Rates Reference -->
                         <div style="background-color: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 30px;">
                             <h6 style="color: #1976D2; margin-top: 0;">2025 Ghana Tax Rates</h6>
@@ -210,14 +183,14 @@
                         </div>
 
                         <!-- Footer -->
-                        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; text-align: center; font-size: 0.85em; color: #666;">
-                            <p style="margin: 5px 0;">
+                        <div class="footer" style="margin-top: 30px; padding-top: 10px; border-top: 2px solid #ddd; text-align: center; font-size: 0.75em; color: #666;">
+                            <p style="margin: 0;">
                                 <strong>This is a computer-generated payslip.</strong> Please keep for your records.
                             </p>
-                            <p style="margin: 5px 0;">
+                            <p style="margin: 0;">
                                 Calculations compliant with Ghana Revenue Authority 2025 regulations.
                             </p>
-                            <p style="margin: 5px 0; font-size: 0.9em;">
+                            <p style="margin: 0; font-size: 0.9em;">
                                 Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>
                             </p>
                         </div>
@@ -226,44 +199,18 @@
             </t>
         </t>
     </template>
+    
 
-    <!-- Report Action -->
     <record id="action_report_employee_payslip_ghana" model="ir.actions.report">
-        <field name="name">Ghana Payslip</field>
+        <field name="name">Print Payslip</field>
         <field name="model">hr.employee</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">gh_localization.report_employee_payslip_ghana</field>
         <field name="report_file">gh_localization.report_employee_payslip_ghana</field>
-        <field name="print_report_name">'Payslip - %s - %s' % (object.name, time.strftime('%B %Y'))</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
         <field name="binding_type">report</field>
-    </record>
-
-
-    <!-- Batch Report - Multiple Employees -->
-    <record id="action_report_batch_payslip_ghana" model="ir.actions.report">
-        <field name="name">Batch Ghana Payslips</field>
-        <field name="model">hr.employee</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">gh_localization.report_employee_payslip_ghana</field>
-        <field name="report_file">gh_localization.report_employee_payslip_ghana</field>
-        <field name="print_report_name">'Payslips - %s' % (time.strftime('%B %Y'))</field>
-    </record>
-
-    <!-- Add menu action for batch printing -->
-    <record id="action_report_print_batch_payslips" model="ir.actions.server">
-        <field name="name">Print Payslips</field>
-        <field name="model_id" ref="hr.model_hr_employee" />
-        <field name="binding_model_id" ref="hr.model_hr_employee" />
-        <field name="binding_view_types">list</field>
-        <field name="state">code</field>
-        <field name="code">
-            action = {
-                'type': 'ir.actions.report',
-                'report_name': 'gh_localization.report_employee_payslip_ghana',
-                'report_type': 'qweb-pdf',
-                'data': {'ids': records.ids},
-            }
+        <field name="print_report_name">
+            (object.name + '_Payslip_' + time.strftime('%B_%Y') if object else 'Batch_Payslips_' + time.strftime('%B_%Y'))
         </field>
     </record>
 </odoo>
