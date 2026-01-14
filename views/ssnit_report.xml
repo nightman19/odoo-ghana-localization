@@ -98,14 +98,6 @@
                                 <p style="margin: 5px 0;">Date: _______________________</p>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div style="border-top: 2px solid #333; padding-top: 10px; margin: 0 20px;">
-                                <p style="margin: 5px 0; font-weight: bold;">Approved By (Manager/Director)</p>
-                                <p style="margin: 5px 0;">Name: _______________________</p>
-                                <p style="margin: 5px 0;">Signature: ___________________</p>
-                                <p style="margin: 5px 0;">Date: _______________________</p>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Footer -->

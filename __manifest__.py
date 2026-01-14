@@ -14,7 +14,7 @@
     """,
     'author': 'Umaru Nuru Mohammed',
     'website': 'https://github.com/nightman19',
-    'depends': ['base', 'hr'],
+    'depends': ['base', 'hr', 'sale'],
     'data': [
         'views/company_views.xml',
         'views/employee_views.xml',
