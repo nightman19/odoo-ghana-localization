@@ -8,8 +8,18 @@
             <xpath expr="//field[@name='ssnid']" position="attributes">
                 <attribute name="string">SSNIT Number</attribute>
             </xpath>
+            <!-- HIDE the default Payroll tab -->
+            <xpath expr="//page[@name='payroll_information']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Ghana Payroll" name="ghana_payroll">
+                    <group>
+                        <group>
+                            <field name="exempt_from_ssnit"/>
+                            <field name="exempt_from_paye"/>
+                        </group>
+                    </group>
                     <group>
                         <group string="Salary Components">
                             <field name="basic_salary"/>

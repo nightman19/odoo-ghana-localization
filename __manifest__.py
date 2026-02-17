@@ -1,7 +1,7 @@
 
 {
     'name': 'Ghana Localization',
-    'version': '1.0.0',
+    'version': '1.2.0',
     'category': 'Human Resources',
     'summary': 'Ghana PAYE & SSNIT Calculator for Employees',
     'description': """
@@ -21,6 +21,7 @@
         'views/payslip_report.xml',
         'views/payroll_summary.xml',
         'views/ssnit_report.xml',
+        'reports/payroll_summary_pdf.xml',
     ],
     'installable': True,
     'application': False,

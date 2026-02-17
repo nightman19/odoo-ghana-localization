@@ -9,6 +9,18 @@ class HrEmployeeGhana(models.Model):
     transport_allowance = fields.Monetary('Transport Allowance', currency_field='currency_id')
     housing_allowance = fields.Monetary('Housing Allowance', currency_field='currency_id')
     
+    # Exemption fields
+    exempt_from_ssnit = fields.Boolean(
+        string='Exempt from SSNIT',
+        default=False,
+        help='Check this to exclude employess from SSNIT deductions (e.g., contractors, temporary staff)'
+    )
+    exempt_from_paye = fields.Boolean(
+        string='Exempt from PAYE Tax',
+        default=False,
+        help='Check this to exclude employess from PAYE tax deductions (e.g., staff below tax threshold)'
+    )
+
     # Computed fields
     gross_salary = fields.Monetary('Gross Salary', compute='_compute_gross_salary', store=True)
     paye_tax = fields.Monetary('PAYE Tax', compute='_compute_paye', store=True)
@@ -36,10 +48,14 @@ class HrEmployeeGhana(models.Model):
                 employee.housing_allowance
             )
     
-    @api.depends('gross_salary')
+    @api.depends('gross_salary', 'exempt_from_paye')
     def _compute_paye(self):
         """Calculate PAYE using 2025 Ghana tax brackets"""
         for employee in self:
+            if employee.exempt_from_paye:
+                employee.paye_tax = 0.0
+                continue
+
             gross = employee.gross_salary
             tax = 0.0
             
@@ -66,10 +82,16 @@ class HrEmployeeGhana(models.Model):
             
             employee.paye_tax = round(tax, 2)
     
-    @api.depends('basic_salary')
+    @api.depends('basic_salary', 'exempt_from_ssnit')
     def _compute_ssnit(self):
         """Calculate SSNIT contributions (2025 rates)"""
         for employee in self:
+            # Check if employee is exempt from SSNIT
+            if employee.exempt_from_ssnit:
+                employee.ssnit_employee = 0.0
+                employee.ssnit_employer = 0.0
+                continue
+            
             max_monthly = 61000 / 12  # GHS 5,083.33
             insurable = min(employee.basic_salary, max_monthly)
             
