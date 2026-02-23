@@ -6,6 +6,13 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <list string="Payroll Summary" create="false" delete="false">
+                <header>
+                    <button name="%(action_payroll_period_wizard)d" 
+                        string="Select Period" 
+                        type="action" 
+                        class="btn-primary"
+                        icon="fa-calendar"/>
+                </header>
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="basic_salary" sum="Total Basic"/>
@@ -33,4 +40,11 @@
               parent="hr.menu_hr_root"
               action="action_payroll_summary"
               sequence="20"/>
+    
+    <!-- Add a menu shortcut to the wizard
+    <menuitem id="menu_select_payroll_period"
+              name="Generate Payroll Reports"
+              parent="hr.menu_hr_root"
+              action="action_payroll_period_wizard"
+              sequence="21"/> -->
 </odoo>

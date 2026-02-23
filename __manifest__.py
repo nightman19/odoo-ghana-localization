@@ -16,12 +16,15 @@
     'website': 'https://github.com/nightman19',
     'depends': ['base', 'hr', 'sale'],
     'data': [
+        'security/ir.model.access.csv', 
         'views/company_views.xml',
         'views/employee_views.xml',
         'views/payslip_report.xml',
         'views/payroll_summary.xml',
         'views/ssnit_report.xml',
+        'views/payroll_wizard_views.xml',
         'reports/payroll_summary_pdf.xml',
+        
     ],
     'installable': True,
     'application': False,

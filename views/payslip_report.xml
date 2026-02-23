@@ -6,7 +6,10 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <div class="page" style="font-size: 13px; page-break-after: always;"> <div class="text-center" style="border-bottom: 2px solid #875A7B; padding-bottom: 10px; margin-bottom: 15px;">
-                            <h5 style="margin: 5px 0;">EMPLOYEE PAYSLIP - <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/></h5>
+                            <h5 style="margin: 5px 0;">EMPLOYEE PAYSLIP - 
+                                <t t-if="data and data.get('period')" t-esc="data.get('period')"/>
+                                <t t-else="" t-esc="context_timestamp(datetime.datetime.now()).strftime('%B %Y')"/>
+                            </h5>
                         </div>
                         <!-- Employee Details Card -->
                         <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
@@ -35,7 +38,10 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Payment Date:</strong></td>
-                                    <td><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y')"/></td>
+                                    <td>
+                                        <t t-if="data and data.get('period')" t-esc="data.get('period')"/>
+                                        <t t-else="" t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y')"/>
+                                    </td>
                                     <td><strong>Currency:</strong></td>
                                     <td>Ghana Cedis (GHS)</td>
                                 </tr>
@@ -209,8 +215,6 @@
         <field name="report_file">gh_localization.report_employee_payslip_ghana</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
         <field name="binding_type">report</field>
-        <field name="print_report_name">
-            (object.name + '_Payslip_' + time.strftime('%B_%Y') if object else 'Batch_Payslips_' + time.strftime('%B_%Y'))
-        </field>
+        <field name="print_report_name">'Payslip_' + object.name.replace(' ', '_') + '_' + (context.get('payroll_period') or time.strftime('%B_%Y'))</field>
     </record>
 </odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_payroll_period_wizard_form" model="ir.ui.view">
+        <field name="name">payroll.period.wizard.form</field>
+        <field name="model">payroll.period.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Payroll Period">
+                <group>
+                    <group>
+                        <field name="month"/>
+                    </group>
+                    <group>
+                        <field name="year"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_payslips" 
+                            string="Generate Payslips" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button name="action_generate_summary_pdf" 
+                            string="Generate Summary PDF" 
+                            type="object" 
+                            class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_payroll_period_wizard" model="ir.actions.act_window">
+        <field name="name">Select Payroll Period</field>
+        <field name="res_model">payroll.period.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_active_ids': active_ids}</field>
+    </record>
+
+    <!-- Alternative: Server Action to make it appear in Actions menu -->
+    <record id="action_payroll_wizard_server" model="ir.actions.server">
+        <field name="name">Select Payroll Period</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_model_id" ref="hr.model_hr_employee"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'res_model': 'payroll.period.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    **env.context,
+                    'active_ids': env.context.get('active_ids', []),
+                    'active_id': env.context.get('active_id'),
+                    'active_model': 'hr.employee',
+                },
+            }
+        </field>
+    </record>
+</odoo>
