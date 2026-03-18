@@ -1,26 +1,5 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Odoo
 *.pyc
-*.pyo
-*.log
-
-# Backup files
-*.bak
-*~
-*.swp
-*.swo
-
-# IDE
-.vscode/
-.idea/
-*.sublime-*
-
-# OS
-.DS_Store
-Thumbs.db
+*.backup
+__pycache__/
+*.disabled
+test.xml
