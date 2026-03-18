@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import datetime
 import logging
+import base64
 
 _logger = logging.getLogger(__name__)
 
@@ -65,7 +66,7 @@ class PayrollPeriodWizard(models.TransientModel):
         attachment = self.env['ir.attachment'].create({
             'name': filename,
             'type': 'binary',
-            'datas': pdf_content.encode('base64') if isinstance(pdf_content, str) else pdf_content,
+            'datas': base64.b64encode(pdf_content if isinstance(pdf_content, bytes) else pdf_content.encode()).decode(),
             'res_model': self._name,
             'res_id': self.id,
             'mimetype': 'application/pdf',
@@ -112,7 +113,7 @@ class PayrollPeriodWizard(models.TransientModel):
         attachment = self.env['ir.attachment'].create({
             'name': filename,
             'type': 'binary',
-            'datas': pdf_content.encode('base64') if isinstance(pdf_content, str) else pdf_content,
+            'datas': base64.b64encode(pdf_content if isinstance(pdf_content, bytes) else pdf_content.encode()).decode(),
             'res_model': self._name,
             'res_id': self.id,
             'mimetype': 'application/pdf',
