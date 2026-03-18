@@ -103,6 +103,7 @@ class PayrollPeriodWizard(models.TransientModel):
             'gh_localization.report_payroll_summary_pdf',
             employees.ids,
             data={
+                'ids': employees.ids,
                 'month': self.month,
                 'year': self.year,
                 'month_name': month_name,
