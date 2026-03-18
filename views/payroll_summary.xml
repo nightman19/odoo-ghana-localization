@@ -6,13 +6,6 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <list string="Payroll Summary" create="false" delete="false">
-                <header>
-                    <button name="%(action_payroll_period_wizard)d" 
-                        string="Select Period" 
-                        type="action" 
-                        class="btn-primary"
-                        icon="fa-calendar"/>
-                </header>
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="basic_salary" sum="Total Basic"/>

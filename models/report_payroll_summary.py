@@ -6,20 +6,24 @@ class ReportPayrollSummary(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        # Fallback to all employees with salary if wizard didn't pass specific IDs
-        if not docids and data and data.get('ids'):
-            docids = data.get('ids')
-            
-        docs = self.env['hr.employee'].browse(docids)
-        print(f"DEBUG: docids model is {self.env[self.env.context.get('active_model') or 'hr.employee']._name}")
-        # Set custom filename
-        if data and data.get('period'):
-            period = data.get('period').replace(' ', '_')
-            self = self.with_context(payroll_period=period)
-        
+        employee_ids = data.get('ids') if data else []
+        docs = self.env['hr.employee'].browse(employee_ids)
+
         return {
-            'doc_ids': docids,
+            'doc_ids': employee_ids,
             'doc_model': 'hr.employee',
             'docs': docs,
-            'data': data or {}, # This makes the 'data' variable exist in your XML
+            'data': data or {},
         }
+
+    def _get_report_base_filename(self):
+        """THIS controls the final downloaded filename in Odoo 17+"""
+        data = self.env.context.get('data') or {}
+
+        month_name = data.get('month_name')
+        year = data.get('year')
+
+        if month_name and year:
+            return f"Payroll_Summary_{month_name}_{year}"
+
+        return "Payroll_Summary"

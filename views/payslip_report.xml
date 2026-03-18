@@ -215,6 +215,6 @@
         <field name="report_file">gh_localization.report_employee_payslip_ghana</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
         <field name="binding_type">report</field>
-        <field name="print_report_name">'Payslip_' + object.name.replace(' ', '_') + '_' + (context.get('payroll_period') or time.strftime('%B_%Y'))</field>
+        <field name="print_report_name">'Payslips_%s_%s' % (object.month, object.year)</field>
     </record>
 </odoo>
