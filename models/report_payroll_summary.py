@@ -17,7 +17,7 @@ class ReportPayrollSummary(models.AbstractModel):
         }
 
     def _get_report_base_filename(self):
-        """THIS controls the final downloaded filename in Odoo 17+"""
+        """THIS controls the final downloaded filename"""
         data = self.env.context.get('data') or {}
 
         month_name = data.get('month_name')

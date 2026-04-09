@@ -59,6 +59,7 @@ class PayrollPeriodWizard(models.TransientModel):
                 'month': self.month,
                 'year': self.year,
                 'month_name': month_name,
+                'period': f"{month_name} {self.year}"
             }
         )
 
@@ -107,6 +108,7 @@ class PayrollPeriodWizard(models.TransientModel):
                 'month': self.month,
                 'year': self.year,
                 'month_name': month_name,
+                'period': f"{month_name} {self.year}"
             }
         )
 

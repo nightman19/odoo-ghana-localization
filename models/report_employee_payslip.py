@@ -7,7 +7,7 @@ class ReportEmployeePayslipGhana(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
 
-        # ALWAYS trust docids first
+        # docids first
         docs = self.env['hr.employee'].browse(docids)
 
         # Fallback to data only if necessary
