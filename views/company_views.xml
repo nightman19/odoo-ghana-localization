@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Add SSNIT field to Company form -->
-    <record id="view_company_form_ghana" model="ir.ui.view">
-        <field name="name">res.company.form.ghana</field>
+    <record id="view_company_ghana_payroll_form" model="ir.ui.view">
+        <field name="name">res.company.ghana.payroll</field>
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_registry']" position="after">
-                <field name="ssnit_employer_number" placeholder="e.g., 200502844"/>
-            </xpath>
+            <notebook position="inside">
+                <page string="Ghana Payroll" name="ghana_payroll">
+
+                    <group string="SSNIT">
+                        <field name="ssnit_employer_number"
+                               placeholder="e.g. 200502844"/>
+                    </group>
+
+                    <group string="Overtime Settings">
+                        <field name="enable_overtime" widget="boolean_toggle"/>
+                        <field name="overtime_junior_threshold"
+                               invisible="not enable_overtime"
+                               required="enable_overtime"/>
+                    </group>
+
+                    <div invisible="enable_overtime"
+                         class="alert alert-info" role="alert">
+                        <strong>Overtime is disabled.</strong>
+                        Enable it above to unlock overtime fields on employee records.
+                    </div>
+
+                    <div invisible="not enable_overtime"
+                         class="alert alert-success" role="alert">
+                        <strong>Overtime rates (GRA 2026):</strong>
+                        Junior staff — first 50% of basic salary at 5%, excess at 10%.
+                        Senior staff — overtime added to chargeable income and taxed
+                        via progressive PIT bands.
+                    </div>
+
+                </page>
+            </notebook>
         </field>
     </record>
 </odoo>

@@ -1,1 +1,1 @@
-from . import test_hr_payroll_ghana
+from . import test_gh_payroll
