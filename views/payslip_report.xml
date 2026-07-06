@@ -81,6 +81,12 @@
                                                 <span t-esc="'{:,.2f}'.format(o.housing_allowance)"/>
                                             </td>
                                         </tr>
+                                        <tr t-if="o.overtime_enabled and o.overtime_amount and o.overtime_amount > 0">
+                                            <td>Overtime</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.overtime_amount)"/>
+                                            </td>
+                                        </tr>
                                         <tr style="border-top: 2px solid #28a745; font-weight: bold; background-color: #e8f5e9;">
                                             <td>GROSS SALARY</td>
                                             <td class="text-right">
@@ -110,6 +116,12 @@
                                                 <span t-esc="'{:,.2f}'.format(o.paye_tax or 0)"/>
                                             </td>
                                         </tr>
+                                        <tr t-if="o.overtime_enabled and o.overtime_tax and o.overtime_tax > 0">
+                                            <td>Overtime Tax</td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,.2f}'.format(o.overtime_tax)"/>
+                                            </td>
+                                        </tr>
                                         <tr>
                                             <td>SSNIT (Employee 5.5%)</td>
                                             <td class="text-right">
@@ -119,7 +131,7 @@
                                         <tr style="border-top: 2px solid #dc3545; font-weight: bold; background-color: #ffebee;">
                                             <td>TOTAL DEDUCTIONS</td>
                                             <td class="text-right">
-                                                <span t-esc="'{:,.2f}'.format((o.paye_tax or 0) + (o.ssnit_employee or 0))"/>
+                                                <span t-esc="'{:,.2f}'.format((o.paye_tax or 0) + (o.ssnit_employee or 0) + (o.overtime_tax or 0))"/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -151,7 +163,7 @@
                       
                         <!-- Tax Rates Reference -->
                         <div style="background-color: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 30px;">
-                            <h6 style="color: #1976D2; margin-top: 0;">2025 Ghana Tax Rates</h6>
+                            <h6 style="color: #1976D2; margin-top: 0;">2026 Ghana Tax Rates</h6>
                             <table style="width: 100%; font-size: 0.85em;">
                                 <tr>
                                     <td style="width: 50%; padding-right: 10px;">
