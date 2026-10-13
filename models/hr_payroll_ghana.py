@@ -137,13 +137,13 @@ class HrEmployeeGhana(models.Model):
     #
 
     _PAYE_MONTHLY_BANDS = [
-        (490.00,      0.00),   # 0%   on first GH₵490/month
-        (600.00,      0.05),   # 5%   on next  GH₵110/month
-        (730.00,      0.10),   # 10%  on next  GH₵130/month
-        (3_896.67,    0.175),  # 17.5% on next GH₵3,166.67/month
-        (19_896.67,   0.25),   # 25%  on next  GH₵16,000/month
-        (50_416.67,   0.30),   # 30%  on next  GH₵30,520/month
-        (float('inf'), 0.35),  # 35%  on remainder
+        (588.00,       0.000),   # 0%     first 588     (Act 1178, from 1 Sep 2026)
+        (668.00,       0.050),   # 5%     next 80
+        (768.00,       0.100),   # 10%    next 100
+        (3_668.00,     0.175),   # 17.5%  next 2,900
+        (19_668.00,    0.250),   # 25%    next 16,000
+        (50_000.00,    0.300),   # 30%    next 30,332
+        (float('inf'), 0.350),   # 35%    above 50,000
     ]
 
     @staticmethod

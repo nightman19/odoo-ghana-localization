@@ -168,8 +168,8 @@
                                 <tr>
                                     <td style="width: 50%; padding-right: 10px;">
                                         <strong>PAYE (Progressive):</strong><br/>
-                                        0-490: 0% | 491-660: 5% | 661-3,750: 10%<br/>
-                                        3,751-20,000: 17.5% | 20,001-60,000: 25% | 60,000+: 30%
+                                        0-588: 0% | 589-668: 5% | 669-768: 10% | 769-3,668: 17.5%<br/>
+                                        3,669-19,668: 25% | 19,669-50,000: 30% | 50,000+: 35%
                                     </td>
                                     <td style="width: 50%;">
                                         <strong>SSNIT (Social Security):</strong><br/>
@@ -206,7 +206,7 @@
                                 <strong>This is a computer-generated payslip.</strong> Please keep for your records.
                             </p>
                             <p style="margin: 0;">
-                                Calculations compliant with Ghana Revenue Authority 2025 regulations.
+                                Calculations compliant with Ghana Revenue Authority 2026 regulations.
                             </p>
                             <p style="margin: 0; font-size: 0.9em;">
                                 Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>

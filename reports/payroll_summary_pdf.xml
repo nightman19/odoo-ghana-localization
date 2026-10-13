@@ -161,7 +161,7 @@
                                 <strong>This is a computer-generated payslip.</strong> Please keep for your records.
                             </p>
                             <p style="margin: 0;">
-                                Calculations compliant with Ghana Revenue Authority 2025 regulations.
+                                Calculations compliant with Ghana Revenue Authority 2026 regulations.
                             </p>
                             <p style="margin: 0; font-size: 0.9em;">
                                 Generated on: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %B %Y at %H:%M')"/>

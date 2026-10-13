@@ -98,7 +98,7 @@ class TestGhanaPayroll(TransactionCase):
 
     def test_paye_2500_basic(self):
         self._set_salary(basic=2500)
-        self.assertAlmostEqual(self.employee.paye_tax, 304.19, places=2)
+        self.assertAlmostEqual(self.employee.paye_tax, 293.04, places=2)
 
     def test_paye_zero_income(self):
         self._set_salary(basic=0)
@@ -128,7 +128,7 @@ class TestGhanaPayroll(TransactionCase):
         effective = self.employee.paye_tax / self.employee.gross_salary
         self.assertGreater(effective, 0.25)
         self.assertLess(effective, 0.35)
-        self.assertAlmostEqual(self.employee.paye_tax, 16_984.98, places=1)
+        self.assertAlmostEqual(self.employee.paye_tax, 17_023.25, places=1)
 
     # ── Overtime: company switch ──────────────────────────────────────────────
 
@@ -220,7 +220,7 @@ class TestGhanaPayroll(TransactionCase):
         """
         Senior staff: PAYE with overtime > PAYE without overtime.
         Basic=2,500, overtime=500
-        Without OT: chargeable = 2,500 - 137.50 = 2,362.50 → PAYE = 304.19
+        Without OT: chargeable = 2,500 - 137.50 = 2,362.50 → PAYE = 293.04
         With OT:    chargeable = 3,000 - 137.50 = 2,862.50 → higher PAYE
         """
         self._set_salary(basic=2500)
@@ -261,7 +261,7 @@ class TestGhanaPayroll(TransactionCase):
 
     def test_net_salary_2500_no_overtime(self):
         self._set_salary(basic=2500)
-        self.assertAlmostEqual(self.employee.net_salary, 2058.31, places=2)
+        self.assertAlmostEqual(self.employee.net_salary, 2069.46, places=2)
 
     def test_net_salary_junior_with_overtime(self):
         """
@@ -306,14 +306,14 @@ class TestGhanaPayroll(TransactionCase):
     @staticmethod
     def _calc_paye(chargeable):
         BANDS = [
-            (490.00,       0.000),
-            (600.00,       0.050),
-            (730.00,       0.100),
-            (3_896.67,     0.175),
-            (19_896.67,    0.250),
-            (50_416.67,    0.300),
-            (float('inf'), 0.350),
-        ]
+        (588.00,       0.000),   # 0%     first 588     (Act 1178, from 1 Sep 2026)
+        (668.00,       0.050),   # 5%     next 80
+        (768.00,       0.100),   # 10%    next 100
+        (3_668.00,     0.175),   # 17.5%  next 2,900
+        (19_668.00,    0.250),   # 25%    next 16,000
+        (50_000.00,    0.300),   # 30%    next 30,332
+        (float('inf'), 0.350),   # 35%    above 50,000
+    ]
         tax, prev, remaining = 0.0, 0.0, chargeable
         for limit, rate in BANDS:
             if remaining <= 0:
