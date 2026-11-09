@@ -156,9 +156,9 @@
                         </div>
 
                         <!-- Footer -->
-                        <div class="footer" style="margin-top: 30px; padding-top: 10px; border-top: 2px solid #ddd; text-align: center; font-size: 0.75em; color: #666;">
+                        <div class="doc-footer" style="margin-top: 30px; padding-top: 10px; border-top: 2px solid #ddd; text-align: center; font-size: 0.75em; color: #666;">
                             <p style="margin: 0;">
-                                <strong>This is a computer-generated payslip.</strong> Please keep for your records.
+                                <strong>This is a computer-generated report.</strong> Please keep for your records.
                             </p>
                             <p style="margin: 0;">
                                 Calculations compliant with Ghana Revenue Authority 2026 regulations.

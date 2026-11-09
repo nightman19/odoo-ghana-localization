@@ -32,7 +32,7 @@
                                 </tr> 
                                 <tr>
                                     <td><strong>Position:</strong></td>
-                                    <td><span t-field="o.job_id.name" t-if="o.job_id"/><span t-else="">N/A</span></td>
+                                    <td><span t-if="o.job_title" t-field="o.job_title"/><span t-elif="o.job_id" t-field="o.job_id.name"/><span t-else="">N/A</span></td>
                                     <td><strong>Department:</strong></td>
                                     <td><span t-field="o.department_id.name" t-if="o.department_id"/><span t-else="">N/A</span></td>
                                 </tr>
@@ -140,7 +140,7 @@
                         </div>
 
                         <!-- Net Pay Box (Prominent) -->
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                        <div style="background-color: #f3eef6; border: 1px solid #875A7B; color: #333; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
                             <p style="margin: 0; font-size: 0.9em; opacity: 0.9;">NET PAYABLE AMOUNT</p>
                             <h2 style="margin: 5px 0; font-weight: bold;">GHS <span t-esc="'{:,.2f}'.format(o.net_salary or 0)"/></h2>
                         </div>
@@ -201,7 +201,7 @@
                         </div>
 
                         <!-- Footer -->
-                        <div class="footer" style="margin-top: 30px; padding-top: 10px; border-top: 2px solid #ddd; text-align: center; font-size: 0.75em; color: #666;">
+                        <div class="doc-footer" style="margin-top: 30px; padding-top: 10px; border-top: 2px solid #ddd; text-align: center; font-size: 0.75em; color: #666;">
                             <p style="margin: 0;">
                                 <strong>This is a computer-generated payslip.</strong> Please keep for your records.
                             </p>
